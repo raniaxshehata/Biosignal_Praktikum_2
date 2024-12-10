@@ -14,13 +14,13 @@ def decg_peaks(ecg, time):
     peaks_d_ecg,_ = sps.find_peaks(d_ecg) #peaks of d_ecg
      
     # plot step 1
-    plt.figure()
-    plt.plot(time[0:len(time)-1], d_ecg, color = 'red')
-    plt.plot(time[peaks_d_ecg], d_ecg[peaks_d_ecg], "x", color = 'g')
-    plt.xlabel('Time [s]')
-    plt.ylabel('Derivative of activation []')
-    plt.title('R-wave peaks step 1: peaks of derivative of ECG')
-    plt.show()
+    #plt.figure()
+    #plt.plot(time[0:len(time)-1], d_ecg, color = 'red')
+    #plt.plot(time[peaks_d_ecg], d_ecg[peaks_d_ecg], "x", color = 'g')
+    #plt.xlabel('Time [s]')
+    #plt.ylabel('Derivative of activation []')
+    #plt.title('R-wave peaks step 1: peaks of derivative of ECG')
+    #plt.show()
     return d_ecg, peaks_d_ecg
     
 """Step 2: This function filters out all peaks that are under the height threshold
@@ -33,23 +33,23 @@ def d_ecg_peaks(d_ecg, peaks_d_ecg, time, heightper, distanceper):
     max_d_ecg = np.max(d_ecg) #find max of the ecg signal
     threshold = np.mean([meanpeaks_d_ecg,max_d_ecg])*heightper # find mean of meanpeakecg and maxecg - this will be a good threshold for finding peaks. it filters out all the peaks from the bottom
     newpeaks_d_ecg,_ = sps.find_peaks(d_ecg, height = threshold) # find the new peaks
-    newpeaks_d_ecg_t = time[newpeaks_d_ecg]
-    newpeaks_d_ecg_t = newpeaks_d_ecg_t.reset_index(drop = True)
-    meandistance = np.mean(np.diff(newpeaks_d_ecg))
-    Rwave_peaks_d_ecg,_ = sps.find_peaks(d_ecg,height = threshold, distance = meandistance*distanceper) # 
+    #newpeaks_d_ecg_t = time[newpeaks_d_ecg]
+    #newpeaks_d_ecg_t = newpeaks_d_ecg_t.reset_index(drop = True)
+    #meandistance = np.mean(np.diff(newpeaks_d_ecg))
+    Rwave_peaks_d_ecg,_ = sps.find_peaks(d_ecg,height = threshold, distance=np.mean(np.diff(newpeaks_d_ecg)) * distanceper) 
     
-      #plot step 2
-    plt.figure()  
-    plt.plot(time[0:len(time)-1], d_ecg, color = 'red') 
-    plt.plot(time[Rwave_peaks_d_ecg], d_ecg[Rwave_peaks_d_ecg], "x", color = 'g')
+    #plot step 2
+    #plt.figure()  
+    #plt.plot(time[0:len(time)-1], d_ecg, color = 'red') 
+    #plt.plot(time[Rwave_peaks_d_ecg], d_ecg[Rwave_peaks_d_ecg], "x", color = 'g')
     #plt.axhline(meanpeaks_d_ecg, color = 'b')
     #plt.axhline(max_d_ecg, color = 'b')
-    thres = plt.axhline(threshold, color = 'black', label = 'threshold')
-    plt.title('R-wave peaks step 2: d_ECG peaks')
-    plt.ylabel('Derivative of activation []')
-    plt.xlabel('Time [s]')
-    plt.legend()
-    plt.show()
+    #thres = plt.axhline(threshold, color = 'black', label = 'threshold')
+    #plt.title('R-wave peaks step 2: d_ECG peaks')
+    #plt.ylabel('Derivative of activation []')
+    #plt.xlabel('Time [s]')
+    #plt.legend()
+    #plt.show()
     return Rwave_peaks_d_ecg
     
 
@@ -69,20 +69,20 @@ def Rwave_peaks(ecg, d_ecg, Rwave_peaks_d_ecg, time):
     
     Rwave = Rwave.astype(np.int64)
     Rwave_t = time[Rwave]
-    Rwave_t = Rwave_t.reset_index(drop = True)
-    Rwave_t = Rwave_t.drop(columns = ['index'])
+    #Rwave_t = Rwave_t.reset_index(drop = True)
+    #Rwave_t = Rwave_t.drop(columns = ['index'])
     
     # plot step 3
-    fig, ax1 = plt.subplots()
-    ax1.plot(time[0:len(time)-1], d_ecg, color = 'r', label = 'Derivative of ECG')
-    ax1.set_ylabel('Activation Derivative []')
-    plt.xlabel('Time [s]') 
-    plt.title('R-wave peaks step 3: R-wave peaks')
-    ax2 = ax1.twinx()
-    ax2.plot(time, ecg, color = 'b', label = 'ECG')
-    ax2.plot(time[Rwave], ecg[Rwave], "x", color = 'g')
-    ax2.set_ylabel('Activation []')
-    ax1.legend()
-    ax2.legend()
-    plt.show()
+    #fig, ax1 = plt.subplots()
+    #ax1.plot(time[0:len(time)-1], d_ecg, color = 'r', label = 'Derivative of ECG')
+    #ax1.set_ylabel('Activation Derivative []')
+    #plt.xlabel('Time [s]') 
+    #plt.title('R-wave peaks step 3: R-wave peaks')
+    #ax2 = ax1.twinx()
+    #ax2.plot(time, ecg, color = 'b', label = 'ECG')
+    #ax2.plot(time[Rwave], ecg[Rwave], "x", color = 'g')
+    #ax2.set_ylabel('Activation []')
+    #ax1.legend()
+    #ax2.legend()
+    #plt.show()
     return Rwave_t
